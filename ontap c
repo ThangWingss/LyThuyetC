@@ -1,0 +1,64 @@
+ÔN TẬP C
+1. Phân vùng nhớ : bao gồm 5 phân vùng nhớ: Text, Data, Bss, stack, heap.
+* text:
+- Quyền truy cập chỉ read
+- Chứa khai báo hằng số 
+* data
+- Quyền truy cập : read, write
+- Chứa biến toàn cục hoặc biến hoặc biến static với giá trị khởi tạo khác 0
+- Được giải phóng khi kết thúc chương trình (Khi tắt khỏi app hoặc tắt nguồn vdk thì các biến Static or biến toàn cục mới được thu hồi phân vùng nhớ, hoặc khi kết thúc chương trình)
+* BSS:
+- Quyền truy cập: read, write
+- Chứa biến toàn cục or biến static có giá trị khởi tạo = 0 hoặc không khởi tạo
+- Được giải phóng khi kết thúc chương trình
+NOTE: đối với gcc, khai báo biến không khởi tạo -> giá trị của nó = 0
+*Stack:
+- Quyền truy cập: read, write
+- Chứa biến local và input parameter của hàm
+- Được giải phóng khi thoát ra khỏi block code của hàm.
+* Heap:
+- Quyền truy cập: read, write
+- Được sử dụng để cấp phát động bằng các hàm: malloc, calloc, realloc.
+- Được giải phóng khi gọi hàm free
+- NOTE: Nếu bạn liên tục cấp phát vùng nhớ mà không giải phóng thì sẽ bị lỗi tràn vùng nhớ Heap (Heap overflow).
+
+2. Macro, Function:
+*Macro:
+- Được xử lý bởi preprocessor
+- Thay thế đoạn code được khai báo macro vào bất cứ chỗ nào xuất hiện macro đó
+*Funtion:
+- Khi thấy hàm được gọi, compiler sẽ phải lưu con trỏ chương trình PC hiện tại vào stack pointer; trỏ PC tới hàm được gọi, thực hiện hàm đó xong và lấy kết quả trả về; sau đó quay lại vị trí ban đầu trong stack pointer trước khi gọi hàm và tiếp tục thực hiện chương trình.
+* So sánh Macro và Function
+- Macro đơn giản là chỉ thay thế đoạn code macro vào chỗ được gọi trước khi được biên dịch
+- Hàm bình thường phải tạo một function call, lưu địa chỉ trước khi gọi hàm vào stack poiter sau đó mới thực hiện hàm và sau cùng là quay trở về địa chỉ trên stack poiter trước khi gọi hàm và thực hiện tiếp chương trình
+- Macro khiến code trở nên dài hơn rất nhiều so với bình thường. Đồng thời nó còn xuất hiện một số lỗi: Không xác định đúng thứ tự ưu tiến
+3. Biến static
+* Biến static cục bộ:
+- sẽ chỉ được khởi tạo 1 lần duy nhất và tồn tại suốt thời gian chạy chương trình. 
+- Giá trị của nó không bị mất đi ngay cả khi kết thúc hàm. 
+- biến cục bộ static chỉ có thể được gọi trong nội bộ hàm khởi tạo ra nó. 
+- Mỗi lần hàm được gọi, giá trị của biến chính bằng giá trị tại lần gần nhất hàm được gọi.
+* Biến static toàn cục
+- Biến toàn cục static sẽ chỉ có thể được truy cập và sử dụng trong File khai báo nó, các File khác không có cách nào truy cập được
+4. struct và union
+*Về mặt ý nghĩa, struct và union cơ bản giống nhau. 
+*Khác nhau : khác nhau về mặt lưu trong dữ liệu trong bộ nhớ
+- Struct :
++) Dữ liệu các thành viên của struct được lưu trữ ở những vùng nhớ khác nhau
++) Kích thước của 1 struct tối thiểu bằng kích thước của các thành viên cộng lại và phụ thuộc vào bộ nhớ đệm (struct padding)
+- Union 
++) Dữ liệu các thành viên sẽ chung 1 vùng nhớ
++ Kích thước của Union sẽ được tính bằng kích thước lớn nhất của kiểu dữ liệu trong Union.
++ Việc thay đổi nội dung của 1 thành viên sẽ dẫn đến thay đổi nội dung các thành viên khác
+5. Con trỏ(pointer)
+* khái niệm con trỏ: con trỏ (pointer) là những biến lưu trữ địa chỉ bộ nhớ của những biến khác
+- Kích thước của con trỏ: phụ thuộc vào môi trường hệ thống máy tính: 
++ vd: môi trường windows 32 bit: 4byte
++ vd: môi trường windows 64 bit: 8byte
+- Con trỏ NULL: Con trỏ NULL là con trỏ lưu địa chỉ 0x00000000. Tức địa chỉ bộ nhớ 0, có ý nghĩa đặc biệt, cho biết con trỏ không trỏ vào đâu cả
+- Con trỏ void: 
++ lưu được mọi địa chỉ, trỏ đến được mọi nơi nhưng không in ra được do tại địa chỉ đó nó không biết được là kiểu dữ liệu gì=> muốn in ra được thì phải ép kiểu cho nó 
+-Pointer to pointer(**ptr): là con trỏ dùng để lưu địa chỉ của con trỏ khác
+-Con trỏ hàm: là con trỏ được tạo ra để lưu trữ địa chỉ của một hàm trong bộ nhớ máy tính. Chúng ta sử dụng con trỏ hàm để truy cập vào vị trí của hàm trong bộ nhớ, cũng như thực thi các lệnh của hàm
+
+
